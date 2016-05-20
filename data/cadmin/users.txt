@@ -1,0 +1,8 @@
+"STEAM_0:1:19269760"
+{
+	"allow"
+	{
+	}
+	"name"	"!cake"
+	"group"	"owner"
+}

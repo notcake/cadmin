@@ -1,0 +1,1 @@
+CAdmin.Lua.IncludeFolder ("client/includes/objects")

@@ -1,0 +1,67 @@
+local PLUGIN = CAdmin.Plugins.Create ("Run Lua")
+PLUGIN:SetAuthor ("!cake")
+PLUGIN:SetDescription ("Provides commands to run lua strings.")
+
+function PLUGIN:Initialize ()
+	local command = CAdmin.Commands.Create ("runcommand_cl", "Commands", "Run Console Command")
+		:SetConsoleCommand ("cexec")
+		:SetLogString ("%Player% ran console command \"%arg1%\" on %target%.")
+	command:AddArgument ("Player")
+		:SetPromptText ("Select whom you want to run the command on:")
+	command:AddArgument ("String", "Console Command")
+		:SetPromptText ("Enter the console command:")
+		:AddFlag ("Multiline")
+	command:SetExecute (function (ply, targply, consoleCommand)
+		targply:ConCommand (consoleCommand)
+	end)
+	
+	command = CAdmin.Commands.Create ("runcommand", "Commands", "Run Console Command")
+		:SetConsoleCommand ("sexec")
+		:SetLogString ("%Player% ran console command \"%arg0%\" on server.")
+	command:AddArgument ("String", "Console Command")
+		:SetPromptText ("Enter the console command:")
+		:AddFlag ("Multiline")
+	command:SetExecute (function (ply, consoleCommand)
+		game.ConsoleCommand (consoleCommand .. "\n")
+	end)
+	
+	command = CAdmin.Commands.Create ("runlua", "Commands", "Run Lua")
+		:SetConsoleCommand ("lua_run")
+		:SetLogString ("%Player% ran lua \"%arg0%\" on server.")
+	command:AddArgument ("String", "Lua Code")
+		:SetPromptText ("Enter the lua code:")
+		:AddFlag ("Multiline")
+	command:SetExecute (function (ply, code)
+		local buffer = ""
+		local function ForwardOutput (func, text, ...)
+			func (text, ...)
+			buffer = buffer .. tostring (text)
+			while buffer:find ("\n") do
+				local newline = buffer:find ("\n")
+				CAdmin.Messages.TsayPlayer (ply, "Lua: " .. buffer:sub (1, newline - 1))
+				buffer = buffer:sub (newline + 1)
+			end
+		end
+		
+		CAdmin.Lua.HookFunction ("Msg", ForwardOutput)
+		CAdmin.Lua.HookFunction ("print", ForwardOutput)
+		RunString ("local function Code () " ..code .. "end local success, error = pcall (Code) if not success then print (error) end")
+		CAdmin.Lua.UnhookFunction ("Msg")
+		CAdmin.Lua.UnhookFunction ("print")
+		if buffer ~= "" then
+			CAdmin.Messages.TsayPlayer (ply, "Lua: " .. buffer)
+		end
+	end)
+	
+	command = CAdmin.Commands.Create ("runlua_cl", "Commands", "Run Lua")
+		:SetConsoleCommand ("lua_run_cl")
+		:SetLogString ("%Player% ran lua \"%arg1%\" on %target%.")
+	command:AddArgument ("Player")
+		:SetPromptText ("Select whom you want to run the code on:")
+	command:AddArgument ("String", "Lua Code")
+		:SetPromptText ("Enter the lua code:")
+		:AddFlag ("Multiline")
+	command:SetExecute (function (ply, targply, code)
+		CAdmin.RPC.SendLua (targply, code)
+	end)
+end

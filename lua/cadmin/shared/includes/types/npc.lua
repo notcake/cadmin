@@ -1,0 +1,1 @@
+local TYPE = CAdmin.Commands.RegisterType ("NPC", "Entity")

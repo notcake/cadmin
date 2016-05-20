@@ -1,0 +1,105 @@
+"owner"
+{
+	"allow"
+	{
+		"1"	"groupdeny"
+		"2"	"plugin_unload_sv"
+		"3"	"groupallow"
+		"4"	"plugin_reload_sv"
+		"5"	"plugin_load_sv"
+		"6"	"addgroup"
+		"7"	"removegroup"
+		"8"	"setgroup"
+		"9"	"renamegroup"
+	}
+	"base"		"superadmin"
+	"console"	"1"
+	"name"		"Server Owner"
+}
+
+"superadmin"
+{
+	"allow"
+	{
+		"1"	"lua_run_cl"
+		"2"	"cexec"
+		"3"	"lua_run"
+		"4"	"sexec"
+	}
+	"base"		"admin"
+	"usergroup"	"superadmin"
+	"name"		"Super Administrators"
+}
+
+"admin"
+{
+	"allow"
+	{
+		"1"	"sslay"
+		"2"	"viewip"
+		"3"	"ban"
+		"4"	"gag"
+		"5"	"destroy_ent"
+		"6"	"mute"
+		"7"	"unmute"
+		"8"	"ungag"
+		"9"	"playerpickup"
+	}
+	"base"		"moderator"
+	"icon"		"gui/silkicons/shield"
+	"Usergroup"	"admin"
+	"name"		"Administrators"
+}
+
+"moderator"
+{
+	"allow"
+	{
+		"1"	"freeze"
+		"2"	"blind"
+		"3"	"hp"
+		"4"	"send"
+		"5"	"bring_view"
+		"6"	"bring"
+		"7"	"armor"
+		"8"	"unignite"
+		"9"	"ignite"
+		"10"	"unfreeze"
+		"11"	"slay"
+		"12"	"kick"
+		"13"	"unblind"
+		"14"	"ungod"
+		"15"	"god"
+	}
+	"base"		"respected"
+	"name"		"Moderators"
+}
+
+"respected"
+{
+	"allow"
+	{
+		"1"	"goto"
+		"2"	"ungod ^"
+		"3"	"god ^"
+	}
+	"base"	"user"
+	"icon"	"gui/silkicons/star"
+	"name"	"Respected"
+}
+
+
+"user"
+{
+	"allow"
+	{
+		"1"	"votemap"
+		"2"	"voteban"
+		"3"	"pm"
+		"4"	"votekick"
+	}
+	"default"	"1"
+	"icon"		"gui/silkicons/user"
+	"usergroup"	"guest"
+	"name"		"Players"
+}
